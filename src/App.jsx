@@ -18,13 +18,32 @@ function App() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(goodBadUrl())
+    /*
+     * We need to add a return to the function inside the useEffect, to abort the fetch.
+     * But then we need to check if the error is an error or an Abort in the catch.
+     * Excellent article about this subject + MDN page on AbortController:
+     *   https://blog.logrocket.com/understanding-react-useeffect-cleanup-function/
+     *   https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+     */
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    fetch(goodBadUrl(), { signal: signal })
       .then((response) => response.json())
-      .then((data) => setProducts(data))
+      .then((data) => {
+        console.log(data);
+        return setProducts(data);
+      })
       .catch((e) => {
         console.log(e);
-        setError(true);
+        if (e.name !== "AbortError") {
+          setError(true);
+        }
       });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -43,7 +62,11 @@ function App() {
         </div>
       )}
       <div>
-          { products.length === 0 && <div>map on an empty array does not error out, it just returns nothing...</div>}
+        {products.length === 0 && (
+          <div>
+            map on an empty array does not error out, it just returns nothing...
+          </div>
+        )}
         <ul>
           {products.map((product) => (
             <li key={product.name}>{product.name}</li>
