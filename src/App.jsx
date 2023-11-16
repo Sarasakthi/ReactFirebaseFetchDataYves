@@ -14,15 +14,29 @@ function App() {
     console.log("useEffect ended");
   }, []);
 
-  const list = products.map((product) => (
-    <li key={product.name}>{product.name}</li>
-  ));
+  /* Here we create a small React component. For it to be a proper React component, we need:
+   *   - it has to be a function
+   *   - the function name has to start with an upper case
+   *   - it has to return valid JSX, that means no siblings, one element with children, hence
+   *     my use of a
+   * */
+  const ProductList = () => {
+    return (
+      <>
+        {products.map((product) => (
+          <li key={product.name}>{product.name}</li>
+        ))}
+      </>
+    );
+  };
 
   return (
     <>
       Hello!!
       <div>
-        <ul>{list}</ul>
+        <ul>
+          <ProductList />
+        </ul>
       </div>
     </>
   );
