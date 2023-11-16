@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import "./App.css";
 
 function goodBadUrl() {
@@ -13,66 +13,57 @@ function goodBadUrl() {
   return `https://${host}/${PATH}`;
 }
 
+async function getData() {
+  return new Promise((resolve, reject) => {
+    fetch(goodBadUrl())
+      .then((resp) => resolve(resp.json()))
+      .catch((e) => reject(e));
+  });
+}
+
 function App() {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(false);
+  /*
+   * We have to set retry: false otherwise it retries 3 times (default value),
+   * and since we use a good url roughly 50% of the time, it ends up never failing.
+   * https://tanstack.com/query/latest/docs/react/guides/query-retries
+   *
+   * However, if you switch to retry: true, it allows to observe the pending
+   * behaviour as well as the retires.
+   * */
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useQuery("products", getData, { retry: false });
 
-  useEffect(() => {
-    /*
-     * We need to add a return to the function inside the useEffect, to abort the fetch.
-     * But then we need to check if the error is an error or an Abort in the catch.
-     * Excellent article about this subject + MDN page on AbortController:
-     *   https://blog.logrocket.com/understanding-react-useeffect-cleanup-function/
-     *   https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-     */
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    fetch(goodBadUrl(), { signal: signal })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        return setProducts(data);
-      })
-      .catch((e) => {
-        console.log(e);
-        if (e.name !== "AbortError") {
-          setError(true);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
+  if (error)
+    return (
+      <div>
+        An error occured:
+        <br />
+        {error.message}
+      </div>
+    );
 
   return (
     <>
       Hello!!
-      {error && (
-        <div className="error">
-          The fetch did not work, there has been an issue.
-          <br />
-          This message is brought to you through inline conditional rendering,
-          this is one way of doing it, but there are many more, check
-          <a href="https://legacy.reactjs.org/docs/conditional-rendering.html">
-            https://legacy.reactjs.org/docs/conditional-rendering.html
-          </a>{" "}
-          to review the other ones.
+      {
+        <div>
+          {products.length === 0 && (
+            <div>
+              map on an empty array does not error out, it just returns
+              nothing...
+            </div>
+          )}
+          <ul>
+            {products.map((product) => (
+              <li key={product.name}>{product.name}</li>
+            ))}
+          </ul>
         </div>
-      )}
-      <div>
-        {products.length === 0 && (
-          <div>
-            map on an empty array does not error out, it just returns nothing...
-          </div>
-        )}
-        <ul>
-          {products.map((product) => (
-            <li key={product.name}>{product.name}</li>
-          ))}
-        </ul>
-      </div>
+      }
     </>
   );
 }
