@@ -14,15 +14,15 @@ function App() {
     console.log("useEffect ended");
   }, []);
 
-  const list = products.map((product) => (
-    <li key={product.name}>{product.name}</li>
-  ));
-
   return (
     <>
       Hello!!
       <div>
-        <ul>{list}</ul>
+        <ul>
+          {products.map((product) => (
+            <li key={product.name}>{product.name}</li>
+          ))}
+        </ul>
       </div>
     </>
   );
