@@ -1,8 +1,14 @@
-# React + Vite
+# Wednesday
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+What started as a simple introduction to JasvaScript asynchronous functions in a React class on cold Wednesday night...
 
-Currently, two official plugins are available:
+A progression from a fetch inside a useEffect to adding a catch clause to using useEffect cleanup function to using React Query.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Usage
+
+- clone this repository
+- `npm install`
+- `npm run dev`
+- use your favourite editor/IDE to study the ordinal jsx files (First.jsx, Second.jsx etc...)
+
+You can also replace your `App.jsx` from the default Vite JavaScript React template with one of the ordinal jsx files.
