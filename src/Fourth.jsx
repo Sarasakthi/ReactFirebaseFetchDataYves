@@ -68,6 +68,7 @@ function ProductListComponent() {
 }
 
 function App() {
+  document.title = "wednesday: Fourth";
   const queryClient = new QueryClient();
 
   return (

@@ -32,6 +32,7 @@ function goodBadUrl() {
 }
 
 function App() {
+  document.title = "wednesday: Second";
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(false);
 

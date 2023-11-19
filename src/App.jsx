@@ -19,6 +19,7 @@ const styles = {
 };
 
 function App() {
+  document.title = "wednesday";
   return (
     <>
       <h1>Wednesday</h1>
@@ -31,26 +32,24 @@ function App() {
           Pages do not include navigation as they were kept as simple as
           possible and self contained.
         </p>
-        <p>
-          To play further in your own project:
-          <ul>
-            <li>
-              <kbd>
-                npm create vite@latest cool-project-name -- --template react
-              </kbd>
-            </li>
-            <li>
-              Replace the current <kbd>App.jsx</kbd> with one of the ordinal jsx
-              file (First.jsx, Second.jsx etc...)
-            </li>
-            <li>
-              <kbd>npm install && npm run dev</kbd>
-            </li>
-            <li>
-              For the fourth one: <kbd>npm install react-query</kbd>
-            </li>
-          </ul>
-        </p>
+        To play further in your own project:
+        <ul>
+          <li>
+            <kbd>
+              npm create vite@latest cool-project-name -- --template react
+            </kbd>
+          </li>
+          <li>
+            Replace the current <kbd>App.jsx</kbd> with one of the ordinal jsx
+            file (First.jsx, Second.jsx etc...)
+          </li>
+          <li>
+            <kbd>npm install && npm run dev</kbd>
+          </li>
+          <li>
+            For the fourth one: <kbd>npm install react-query</kbd>
+          </li>
+        </ul>
       </section>
 
       <div style={styles.flexed}>

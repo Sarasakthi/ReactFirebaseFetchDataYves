@@ -20,6 +20,7 @@ const styles = {
 };
 
 function App() {
+  document.title = "wednedsday: First";
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

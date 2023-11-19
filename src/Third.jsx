@@ -32,21 +32,14 @@ function goodBadUrl() {
 }
 
 function App() {
+  document.title = "wednesday: Third";
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    /*
-     * We need to add a return to the function inside the useEffect, to abort the fetch.
-     * But then we need to check if the error is an error or an Abort in the catch.
-     * Excellent article about this subject + MDN page on AbortController:
-     *   https://blog.logrocket.com/understanding-react-useeffect-cleanup-function/
-     *   https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-     */
     const controller = new AbortController();
-    const signal = controller.signal;
 
-    fetch(goodBadUrl(), { signal: signal })
+    fetch(goodBadUrl(), { signal: controller.signal })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -75,6 +68,15 @@ function App() {
           is executed in the browser dev console.
         </p>
         <p>
+          From the React documentation: &quot;Your setup function may also
+          optionally return a cleanup function. When your component is added to
+          the DOM, React will run your setup function. After every re-render
+          with changed dependencies, React will first run the cleanup function
+          (if you provided it) with the old values, and then run your setup
+          function with the new values. After your component is removed from the
+          DOM, React will run your cleanup function&quot;.
+        </p>
+        <p>
           Finally this is working correctly, we get either the error or the
           data, but never both anymore, even in dev/strict mode! Check LogRocket
           excellent article about useEffect cleanup function in the references.
@@ -86,6 +88,11 @@ function App() {
         <cite>
           <a href="https://blog.logrocket.com/understanding-react-useeffect-cleanup-function/">
             LogRocket Blog: Understanding React’s useEffect cleanup function
+          </a>
+        </cite>
+        <cite>
+          <a href="https://react.dev/reference/react/useEffect">
+            React useEffect
           </a>
         </cite>
         <cite>
